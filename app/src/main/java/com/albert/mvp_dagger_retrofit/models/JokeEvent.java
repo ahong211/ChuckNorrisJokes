@@ -13,6 +13,10 @@ public class JokeEvent {
         this.jokeString = jokeString;
     }
 
+    public JokeEvent(String jokeString) {
+        this.jokeString = jokeString;
+    }
+
     public int getEventCode() {
         return eventCode;
     }

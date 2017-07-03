@@ -3,13 +3,15 @@ package com.albert.mvp_dagger_retrofit.helper;
 
 import android.util.Log;
 
+import com.albert.mvp_dagger_retrofit.activity.RetrofitEndPoints;
+import com.albert.mvp_dagger_retrofit.injection.RetrofitController.DaggerRetrofitControllerComponent;
 import com.albert.mvp_dagger_retrofit.models.JokeEvent;
 import com.albert.mvp_dagger_retrofit.models.Jokes;
-import com.albert.mvp_dagger_retrofit.activity.RetrofitEndPoints;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.greenrobot.eventbus.EventBus;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,14 +23,16 @@ public class RetrofitController implements Callback<Jokes>{
 
     public static final String BASE_URL = "http://api.icndb.com/";
     public static final String TAG = RetrofitController.class.getSimpleName() + "_TAG";
-    private static final int EVENT_CODE = 747;
+
+    @Inject
+    Gson gson;
 
     public RetrofitController() {
 
     }
 
     public void start() {
-        Gson gson = new GsonBuilder().setLenient().create();
+        DaggerRetrofitControllerComponent.create().inject(this);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -42,9 +46,7 @@ public class RetrofitController implements Callback<Jokes>{
 
     @Override
     public void onResponse(Call<Jokes> call, Response<Jokes> response) {
-        EventBus.getDefault().post(new JokeEvent(EVENT_CODE, response.body().getValue().getJoke()));
-
-        Log.d(TAG, "onResponse: " + response.body().getValue().getJoke());
+        EventBus.getDefault().post(new JokeEvent(response.body().getValue().getJoke()));
     }
 
     @Override
