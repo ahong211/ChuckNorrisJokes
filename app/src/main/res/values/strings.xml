@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MVP-Dagger-Retrofit</string>
+    <string name="app_name">Chuck Norris Jokes</string>
     <string name="placeholder_joke_text">This is where the joke is going to be!</string>
     <string name="refresh">Refresh</string>
 </resources>
